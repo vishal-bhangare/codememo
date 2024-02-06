@@ -1,5 +1,5 @@
 # Patterns Preview
-
+*You will find C++ code in [patterns folder](https://github.com/vishal-bhangare/codememo/edit/main/patterns/)*
 * **Pattern 1**
 ```
 *****
