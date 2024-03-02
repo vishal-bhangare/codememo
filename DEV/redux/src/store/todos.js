@@ -1,53 +1,28 @@
-// Actions types
-const TODO_ADDED = "todoAdded";
-const TODO_REMOVED = "todoRemoved";
-const TODO_COMPLETED = "todoCompleted";
+import { createAction, createReducer } from '@reduxjs/toolkit'
 
-// Action Creators
-export const todoAdded = title => ({
-  type: TODO_ADDED,
-  payload: {
-    title: title
-  }
-})
 
-export const todoRemoved = id => ({
-  type: TODO_REMOVED,
-  payload: {
-    id: id
-  }
-})
 
-export const todoCompleted = id => ({
-  type: TODO_COMPLETED,
-  payload: {
-    id: id
-  }
-})
-
+// Actions creators
+export const todoAdded = createAction("todoAdded")
+export const todoRemoved = createAction("todoRemoved")
+export const todoCompleted = createAction("todoCompleted")
+export const todoUpdated = createAction("todoUpdated")
 
 // Reducer
 
 let lastId = 0;
 
-export default function reducer(state = [], action) {
-  switch (action.type) {
-    case TODO_ADDED:
-      return [
-        ...state,
-        {
-          id: ++lastId,
-          title: action.payload.title,
-          completed: false
-        }
-      ]
-    case TODO_REMOVED:
-      return state.filter(todo => todo.id != action.payload.id)
-
-    case TODO_COMPLETED:
-      return state.map(todo => todo.id !== action.payload.id ? todo : { ...todo, completed: true })
-
-    default:
-      return state;
-  }
-}
+export default createReducer([], (builder) => {
+  builder
+    .addCase(todoAdded.type, (todos, action) => {
+      todos.push({
+        id: ++lastId,
+        title: action.payload.title,
+        completed: false
+      })
+    })
+    .addCase(todoCompleted.type, (state, action) => {
+      const index = state.findIndex(todo => todo.id === action.payload.id)
+      state[index].completed = true
+    })
+})
