@@ -3,7 +3,6 @@ import { createSelector } from "reselect";
 import { apiCallBegan } from "./api";
 import moment from "moment";
 
-let lastId = 0;
 const todoSlice = createSlice({
   name: "todos",
   initialState: {
@@ -31,11 +30,7 @@ const todoSlice = createSlice({
       todos.list[idx].userId = userId;
     },
     todoAdded: (todos, action) => {
-      todos.list.push({
-        id: ++lastId,
-        title: action.payload.title,
-        completed: false,
-      });
+      todos.list.push(action.payload);
     },
     todoCompleted: (state, action) => {
       const index = state.list.findIndex(
@@ -79,6 +74,22 @@ export const loadTodos = () => (dispatch, getState) => {
     })
   );
 };
+
+export const addTodo = (bug) =>
+  apiCallBegan({
+    url: "/todos",
+    method: "post",
+    data: bug,
+    onSuccess: todoAdded.type,
+  });
+
+export const completeTodo = (id) =>
+  apiCallBegan({
+    url: "/todos/" + id,
+    method: "patch",
+    data: { completed: true },
+    onSuccess: todoCompleted.type,
+  });
 
 // selector
 export const getPendingTodos = createSelector(
