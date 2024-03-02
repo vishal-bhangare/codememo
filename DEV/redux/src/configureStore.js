@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import reducer from './store/todos'
+import reducer from './store/reducer'
 
 
 
