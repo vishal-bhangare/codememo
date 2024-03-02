@@ -1,5 +1,5 @@
 import store from "./src/store";
-import { todoAdded, todoCompleted } from './src/actions';
+import { todoAdded, todoCompleted } from './src/store/actions';
 
 const unsubscribe = store.subscribe(() => {
   console.log("store changed!", store.getState())
