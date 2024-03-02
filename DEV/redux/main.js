@@ -1,13 +1,11 @@
 import configureStore from "./src/configureStore";
-import { getPendingTodos, getTodosByUsers, todoAdded, todoAssignedToUser, todoCompleted, todoRemoved } from './src/store/todos';
-import { userAdded } from "./src/store/users";
+import * as actions from "./src/store/api";
+import { loadTodos } from "./src/store/todos";
+
 const store = configureStore();
 const unsubscribe = store.subscribe(() => {
-  console.log("store changed!", store.getState())
-})
+  console.log("store changed!", store.getState());
+});
 
-store.dispatch({
-  type: "error", payload: {
-    message: "hello",
-  }
-})
+store.dispatch(loadTodos());
+setTimeout(() => store.dispatch(loadTodos()), 2000);
